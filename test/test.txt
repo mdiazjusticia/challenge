@@ -1,0 +1,11 @@
+SET a 10
+GET a
+SET b 20
+SET c 30 10 seconds
+ZADD key1 1 "member1"
+ZADD key1 2 "member2"
+ZADD key1 3 "member3"
+ZADD key1 4 "member4"
+ZCARD key1
+ZRANK key1 "member3"
+ZRANGE key1 1 3

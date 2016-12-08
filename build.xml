@@ -1,0 +1,31 @@
+<project>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+            <classpath>
+                <pathelement path="lib/java-cup-11b.jar"/>
+                <pathelement path="lib/java-cup-11b-runtime.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/challenge.jar" basedir="build/classes">
+            <zipgroupfileset dir="lib" includes="*.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="challenge.Server"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/challenge.jar" fork="true"/>
+    </target>
+
+</project>

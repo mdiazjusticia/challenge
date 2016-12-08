@@ -1,0 +1,68 @@
+
+
+package challenge;
+import java_cup.runtime.*;
+import challenge.actions.*;
+
+/* Parser code to change the way the parser reports errors (include
+   line and column number of the error). */
+parser code {:
+
+:};
+
+
+
+/* ------------Declaration of Terminals and Non Terminals Section----------- */
+
+// Terminals (tokens returned by the scanner).
+terminal           GET, SET, SECONDS, DEL, DBSIZE, INCR, ZADD, ZCARD, ZRANK, ZRANGE;
+terminal Integer   NUMBER;
+terminal String    VALUE, MEMBER;
+
+// Non terminals used in the grammar section.
+non terminal Action     expr;
+non terminal String     term;
+
+/* ----------------------------Grammar Section-------------------- */
+
+   expr      ::= GET term:t
+                 {: RESULT = new Get(t); :}
+                 |
+                 SET term:t1 term:t2
+                 {: RESULT = new Set(t1, t2, -1); :}
+                 |
+                 SET term:t1 NUMBER:n
+                 {: RESULT = new Set(t1, n, -1); :}
+                 |
+                 SET term:t1 term:t2 NUMBER:n SECONDS
+                 {: RESULT = new Set(t1, t2, n); :}
+                 |
+                 SET term:t1 NUMBER:n1 NUMBER:n2 SECONDS
+                 {: RESULT = new Set(t1, n1, n2); :}
+                 |
+                 DEL term:t1
+                 {: RESULT = new Del(t1); :}
+                 |
+                 DBSIZE
+                 {: RESULT = new Dbsize(); :}
+                 |
+                 INCR term:t1
+                 {: RESULT = new Incr(t1); :}
+                 |
+                 ZADD term:t1 NUMBER:n MEMBER:t2
+                 {: RESULT = new Zadd(t1, n, t2); :}
+                 |
+                 ZCARD term:t1
+                 {: RESULT = new Zcard(t1); :}
+                 |
+                 ZRANK term:t1 MEMBER:m
+                 {: RESULT = new Zrank(t1, m); :}
+                 |
+                 ZRANGE term:t1 NUMBER:n1 NUMBER:n2
+                 {: RESULT = new Zrange(t1, n1, n2); :}
+                 ;
+
+   term      ::=
+                 VALUE:n
+                 {: RESULT = n; :}
+                 ;
